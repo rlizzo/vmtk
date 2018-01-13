@@ -38,19 +38,19 @@ class VTK_VMTK_CONTRIB_EXPORT vtkvmtkRBFInterpolation2 : public vtkImplicitFunct
 {
   public:
   vtkTypeMacro(vtkvmtkRBFInterpolation2,vtkImplicitFunction);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  void PrintSelf(ostream& os, vtkIndent indent) VTK_OVERRIDE;
 
   static vtkvmtkRBFInterpolation2 *New();
 
   // Description
   // Evaluate polyball.
-  double EvaluateFunction(double x[3]);
-  double EvaluateFunction(double x, double y, double z)
+  double EvaluateFunction(double x[3]) VTK_OVERRIDE;
+  double EvaluateFunction(double x, double y, double z) VTK_OVERRIDE
   {return this->vtkImplicitFunction::EvaluateFunction(x, y, z); } ;
 
   // Description
   // Evaluate polyball gradient.
-  void EvaluateGradient(double x[3], double n[3]);
+  void EvaluateGradient(double x[3], double n[3]) VTK_OVERRIDE;
 
   void ComputeCoefficients();
 
@@ -78,7 +78,11 @@ class VTK_VMTK_CONTRIB_EXPORT vtkvmtkRBFInterpolation2 : public vtkImplicitFunct
   };
 //ETX
 
-  unsigned long GetMTime();
+  #ifdef VTK_HAS_MTIME_TYPE
+    vtkMTimeType GetMTime() VTK_OVERRIDE;
+  #else
+    unsigned long GetMTime();
+  #endif
 
   protected:
   vtkvmtkRBFInterpolation2();
