@@ -1,0 +1,70 @@
+
+
+# The language in this case has no bearing - we are going to be making use of "conda" for a
+# python distribution for the scientific python stack.
+language:
+  - c
+  - c++
+
+env:
+  matrix:
+    - PYTHON_VERSION=3.6.1
+    - PYTHON_VERSION=2.7.14
+    - PYTHON_VERSION=3.5.1
+    include:
+      - os: linux
+        dist: trusty
+        sudo: required
+        addons:
+          apt:
+            sources:
+              - ubuntu-toolchain-r-test
+            packages:
+              - g++-7
+        env:
+          - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+      - os: osx
+        osx_image: xcode9.2
+  global:
+    - DESTINATION_CONDA_CHANNEL="vmtk"
+    - TARGET_ARCH="x64"
+    - CONDA_INSTALL_LOCN="${HOME}/miniconda"
+
+before_install:
+    - eval "${MATRIX_EVAL}"
+
+
+# Matrix is fully specified (for now) by os versions
+
+install:
+    # Install and set up miniconda.
+    - if [ $TRAVIS_OS_NAME == "linux" ]; then sudo apt-get update && sudo apt-get install -yqq git wget libxt-dev libgl1-mesa-glx libgl1-mesa-dev libglapi-mesa libosmesa-dev build-essential; fi
+    - if [ $TRAVIS_OS_NAME == "linux" ]; then wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
+    - if [ $TRAVIS_OS_NAME == "osx" ]; then wget http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh; fi
+    - if [ $TRAVIS_OS_NAME == "osx" ]; then git clone https://github.com/phracker/MacOSX-SDKs.git; fi
+    - bash miniconda.sh -b -p $CONDA_INSTALL_LOCN
+    - export PATH=${CONDA_INSTALL_LOCN}/bin:$PATH
+    - conda config --set always_yes true
+
+    - conda install --quiet -y conda conda-build anaconda-client
+
+    # set the ordering of additional channels
+    - conda config --prepend channels vmtk/label/dev
+
+    # To ease debugging, list installed packages
+    - conda info -a
+    - conda list
+    - |
+      # Only upload if this is NOT a pull request.
+      # if [ "$TRAVIS_PULL_REQUEST" = "false" ] && \
+      #    [ $TRAVIS_REPO_SLUG = "bccp/conda-channel-bccp" ] && \
+      #    [ "$TRAVIS_BRANCH" == "master" ]; then
+      #     UPLOAD="--user $DESTINATION_CONDA_CHANNEL --token $BINSTAR_TOKEN";
+      #     conda config --set anaconda_upload true
+      #     echo "Uploading enabled";
+      # else
+      #     echo "Uplading disabled";
+      #     UPLOAD="";
+      # fi
+script:
+    - conda build recipe --variants "{'python': ["$PYTHON_VERSION"]}"
