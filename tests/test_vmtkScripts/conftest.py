@@ -40,7 +40,12 @@ def input_datadir():
         datadir = '@ExternalData_BINARY_ROOT@/tests/data/input'
         if not os.path.isdir(datadir): raise ValueError()
     except ValueError:
-        datadir = '/Users/rick/projects/vmtk/vmtk-test-data/input'
+        try:
+            datadir = '@ExternalData_BINARY_ROOT@'
+            datadir = datadir.replace('/work/build/ExternalData', '/test_tmp/build/ExternalData/tests/data/input')
+            if not os.path.isdir(datadir): raise ValueError()
+        except ValueError:
+            datadir = '/Users/rick/projects/vmtk/vmtk-test-data/input'
     return datadir
 
 
@@ -80,7 +85,12 @@ def write_image():
             datadir = '@ExternalData_BINARY_ROOT@/tests/data/imagereference'
             if not os.path.isdir(datadir): raise ValueError()
         except ValueError:
-            datadir = '/Users/rick/projects/vmtk/vmtk-test-data/imagereference'
+            try:
+                datadir = '@ExternalData_BINARY_ROOT@'
+                datadir = datadir.replace('/work/build/ExternalData', '/test_tmp/build/ExternalData/tests/data/imagereference')
+                if not os.path.isdir(datadir): raise ValueError()
+            except ValueError:
+                datadir = '/Users/rick/projects/vmtk/vmtk-test-data/imagereference'
         writer.OutputFileName = os.path.join(datadir, filename)
         writer.Execute()
         return
@@ -95,7 +105,12 @@ def compare_images():
             datadir = '@ExternalData_BINARY_ROOT@/tests/data/imagereference'
             if not os.path.isdir(datadir): raise ValueError()
         except ValueError:
-            datadir = '/Users/rick/projects/vmtk/vmtk-test-data/imagereference'
+            try:
+                datadir = '@ExternalData_BINARY_ROOT@'
+                datadir = datadir.replace('/work/build/ExternalData', '/test_tmp/build/ExternalData/tests/data/imagereference')
+                if not os.path.isdir(datadir): raise ValueError()
+            except ValueError:
+                datadir = '/Users/rick/projects/vmtk/vmtk-test-data/imagereference'
         reader.InputFileName = os.path.join(datadir, reference_file)
         reader.Execute()
 
@@ -150,7 +165,12 @@ def write_surface():
             datadir = '@ExternalData_BINARY_ROOT@/tests/data/surfacereference'
             if not os.path.isdir(datadir): raise ValueError()
         except ValueError:
-            datadir = '/Users/rick/projects/vmtk/vmtk-test-data/surfacereference'
+            try:
+                datadir = '@ExternalData_BINARY_ROOT@'
+                datadir = datadir.replace('/work/build/ExternalData', '/test_tmp/build/ExternalData/tests/data/surfacereference')
+                if not os.path.isdir(datadir): raise ValueError()
+            except ValueError:
+                datadir = '/Users/rick/projects/vmtk/vmtk-test-data/surfacereference'
         writer.OutputFileName = os.path.join(datadir, filename)
         writer.Execute()
         return
@@ -165,7 +185,12 @@ def compare_surfaces():
             datadir = '@ExternalData_BINARY_ROOT@/tests/data/surfacereference'
             if not os.path.isdir(datadir): raise ValueError()
         except ValueError:
-            datadir = '/Users/rick/projects/vmtk/vmtk-test-data/surfacereference'
+            try:
+                datadir = '@ExternalData_BINARY_ROOT@'
+                datadir = datadir.replace('/work/build/ExternalData', '/test_tmp/build/ExternalData/tests/data/surfacereference')
+                if not os.path.isdir(datadir): raise ValueError()
+            except ValueError:
+                datadir = '/Users/rick/projects/vmtk/vmtk-test-data/surfacereference'
         reader.InputFileName = os.path.join(datadir, reference_file)
         reader.Execute()
 

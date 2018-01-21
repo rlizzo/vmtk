@@ -17,4 +17,4 @@ pin_run_as_build:
   itk: x.x.x
 
 CONDA_BUILD_SYSROOT:
-  - /opt/MacOSX10.9.sdk   # [osx]
+  - $HOME/MacOSX-SDKs/MacOSX10.9.sdk   # [osx]

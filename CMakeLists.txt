@@ -86,10 +86,10 @@ option( VMTK_USE_VTK8
   "Compile vmtk against VTK 8. OFF is VTK 7.1" ON )
 
 option( VMTK_BUILD_TESTING
-  "Build the VMTK testing libraries" ON)
+  "Build the VMTK testing libraries" OFF)
 
 IF(VMTK_BUILD_TESTING)
-  add_subdirectory(tests)
+  subdirs(tests)
 ENDIF(VMTK_BUILD_TESTING)
 
 option( VMTK_BUNJEE_BUILD

@@ -28,7 +28,7 @@ package:
   version: {{ version }}
 
 source:
-    path: ~/vmtk/
+    path: ../
 
 build:
   number: 8
@@ -40,8 +40,8 @@ build:
   
 requirements:
   build:
-    - {{ compiler('c') }}    # [osx or win]
-    - {{ compiler('cxx') }}  # [osx or win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - pkgconfig              # [unix]
     - cmake 
     - git
@@ -67,8 +67,13 @@ requirements:
     - h5py
 
 test:
-  imports:
-    - vmtk.vmtkscripts
+  source_files:
+    - build/ExternalData/*
+    - build/tests/*
+  requires:
+    - pytest
+  commands:
+    - pytest ./build/tests/
 
 about:
   home: www.vmtk.org
